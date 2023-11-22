@@ -9,7 +9,7 @@ resources = {  # default global variable
 
 # TODO Prompt user until user gives valid answer
 def prompt_customer():
-    return input("What would you like? (espresso/latte/cappuccino): ")
+    input("What would you like? (espresso/latte/cappuccino): ")
 
 # TODO Turn off coffee machine
 
