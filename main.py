@@ -30,7 +30,7 @@ def prompt_customer():
     while answer not in valid_options and not answer.startswith("refill"):  # verify user gave valid answer
         if answer != "":
             print("You chose an incorrect option. Please try again.")
-        answer = input("What would you like? (espresso/latte/cappuccino): ")
+        answer = input("What would you like? (espresso/latte/cappuccino): ").lower()
     return answer
 
 
