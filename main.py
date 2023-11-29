@@ -117,7 +117,7 @@ def calculate_money(coins: dict):
     payment_total += coins["dimes"] * DIME_VALUE
     payment_total += coins["nickels"] * NICKEL_VALUE
     payment_total += coins["pennies"] * PENNY_VALUE
-    return payment_total
+    return round(payment_total,2)
 
 
 # Make sure user gave enough money
