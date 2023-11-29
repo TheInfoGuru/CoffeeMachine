@@ -45,12 +45,12 @@ def turn_off():
 
 
 # Refill resources
-def refill(inventory: dict, response: str):
+def refill(response: str):
     param_list = response.split(" ")
     num_of_param = len(param_list)
     if num_of_param not in [1, 2]:  # Verify response only contains 1 or 2 strings
         print(REFILL_ERROR_MSG)
-        return -1
+        return
 
     if num_of_param == 1:  # default to 100 if no number is given
         refill_amount = 100
@@ -59,13 +59,12 @@ def refill(inventory: dict, response: str):
             refill_amount = int(param_list[1])  # make sure second string param can be int
         except ValueError:
             print(REFILL_ERROR_MSG)
-            return -1
-    for item in inventory:
+            return
+    for item in resources:
         if item == "money":  # don't make any changes to money on hand
             continue
-        inventory[item] += refill_amount  # refill each inventory by refill amount specified
+        resources[item] += refill_amount  # refill each inventory by refill amount specified
     print(f"Inventory has been refilled by {refill_amount}.")
-    return inventory
 
 
 # check user option and do the appropriate action
@@ -76,10 +75,7 @@ def get_drink(response: str):
         run_report()
         return -1
     elif response.startswith("refill"):
-        global resources
-        new_resources = refill(resources, response)
-        if new_resources != -1:  # if there was an issue with the user input for refill
-            resources = new_resources.copy()
+        refill(response)
         return -1
     return MENU[response]
 
@@ -137,10 +133,9 @@ def give_change(change):
 
 
 # make the coffee, and accurate reduce inventory
-def adjust_inventory(ingredients_used: dict, inventory: dict):
+def adjust_inventory(ingredients_used: dict):
     for ingredient in ingredients_used:
-        inventory[ingredient] -= ingredients_used[ingredient]
-    return inventory
+        resources[ingredient] -= ingredients_used[ingredient]
 
 
 # Tell user to enjoy drink
@@ -168,6 +163,6 @@ while True:  # continue running until user turns off coffee machine
 
     resources["money"] += drink_details["cost"]
     give_change(customer_change)
-    resources = adjust_inventory(drink_details["ingredients"], resources)
+    adjust_inventory(drink_details["ingredients"])
 
     enjoy_drink(drink_choice)
